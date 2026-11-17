@@ -89,10 +89,7 @@ class ScreenshotTest {
     }
 
     @Test fun list() = shot("3_list") {
-        WordListScreen("A", WordIndex.filter(words, "A"), hideMeaning = false, onToggleHide = {})
+        WordListScreen("A", WordIndex.filter(words, "A"))
     }
 
-    @Test fun listHidden() = shot("4_list_hidden") {
-        WordListScreen("A", WordIndex.filter(words, "A"), hideMeaning = true, onToggleHide = {})
-    }
 }

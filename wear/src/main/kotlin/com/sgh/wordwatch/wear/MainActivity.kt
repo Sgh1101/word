@@ -27,7 +27,6 @@ class MainActivity : ComponentActivity() {
 fun WordWatchApp() {
     val ctx = LocalContext.current
     val words by WatchWordStore.words.collectAsStateWithLifecycle()
-    val hide by WatchWordStore.hideMeaning.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         WatchWordStore.load(ctx)
         WatchWordStore.pullLatest(ctx)
@@ -67,8 +66,6 @@ fun WordWatchApp() {
             WordListScreen(
                 title = if (key == WordIndex.ALL) "전체" else key,
                 words = WordIndex.filter(list, key),
-                hideMeaning = hide,
-                onToggleHide = { WatchWordStore.setHideMeaning(ctx, !hide) },
             )
         }
     }

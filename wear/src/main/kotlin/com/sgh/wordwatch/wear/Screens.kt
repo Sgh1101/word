@@ -19,11 +19,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -48,7 +44,6 @@ private val ChipBg = Color(0xFF263238)
 private val ChipAllBg = Color(0xFF1E3A5F)
 private val Accent = Color(0xFF8AB4F8)
 private val Dim = Color(0xFFB0B0B0)
-private val Faint = Color(0xFF6E6E6E)
 
 private const val CHIPS_PER_ROW = 4
 
@@ -152,51 +147,30 @@ private fun SmallChip(label: String, count: Int?, bg: Color, onClick: () -> Unit
 
 /** 단어 목록: 작은 글씨, 한 줄에 단어+뜻 → 화면당 최대한 많이. */
 @Composable
-fun WordListScreen(title: String, words: List<Word>, hideMeaning: Boolean, onToggleHide: () -> Unit) {
-    // 뜻 숨김 모드에서 탭해서 펼친 단어들
-    var revealed by rememberSaveable(hideMeaning) { mutableStateOf(setOf<String>()) }
-
+fun WordListScreen(title: String, words: List<Word>) {
     RotaryList(contentPadding = PaddingValues(top = 20.dp, bottom = 40.dp, start = 24.dp, end = 18.dp)) {
         item {
             Text(
                 buildAnnotatedString {
                     withStyle(SpanStyle(color = Accent, fontWeight = FontWeight.Bold)) { append(title) }
-                    withStyle(SpanStyle(color = Dim)) { append(" ${words.size}  ·  ") }
-                    withStyle(SpanStyle(color = Faint)) { append(if (hideMeaning) "뜻 보기" else "뜻 숨기기") }
+                    withStyle(SpanStyle(color = Dim)) { append(" ${words.size}") }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(onClick = onToggleHide)
-                    .padding(bottom = 4.dp),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
                 textAlign = TextAlign.Center,
                 fontSize = 11.sp,
             )
         }
         items(words, key = { it.key }) { w ->
-            val showMeaning = !hideMeaning || w.key in revealed
             Text(
                 buildAnnotatedString {
                     withStyle(SpanStyle(color = Color.White, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)) { append(w.term) }
                     if (w.meaning.isNotEmpty()) {
                         append("  ")
-                        if (showMeaning) {
-                            withStyle(SpanStyle(color = Dim, fontSize = 12.sp)) { append(w.meaning) }
-                        } else {
-                            withStyle(SpanStyle(color = Faint, fontSize = 12.sp)) { append("···") }
-                        }
+                        withStyle(SpanStyle(color = Dim, fontSize = 12.sp)) { append(w.meaning) }
                     }
                 },
                 lineHeight = 15.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .then(
-                        if (hideMeaning) {
-                            Modifier.clickable {
-                                revealed = if (w.key in revealed) revealed - w.key else revealed + w.key
-                            }
-                        } else Modifier,
-                    )
-                    .padding(vertical = 2.dp),
+                modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
             )
         }
     }
