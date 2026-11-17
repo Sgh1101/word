@@ -80,15 +80,9 @@ class ScreenshotTest {
         IndexScreen("단어 ${words.size}", WordIndex.firstGroups(words), false, {}, {})
     }
 
-    @Test fun sub() = shot("2_second_letter") {
-        IndexScreen("A ${WordIndex.filter(words, "A").size}", WordIndex.secondGroups(words, "A"), false, {}, {}, "A 전체")
-    }
 
-    @Test fun subFew() = shot("2b_second_letter_B") {
-        IndexScreen("B ${WordIndex.filter(words, "B").size}", WordIndex.secondGroups(words, "B"), false, {}, {}, "B 전체")
-    }
 
-    @Test fun list() = shot("3_list") {
+    @Test fun list() = shot("2_list") {
         WordListScreen("A", WordIndex.filter(words, "A"))
     }
 

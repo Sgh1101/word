@@ -13,9 +13,9 @@ object WordIndex {
 
     /**
      * 한 글자 그룹에 이 개수 이상이면 두 번째 글자 단계를 보여준다.
-     * 1 = 항상 두 번째 글자 단계를 보여줌. (예: 15 로 바꾸면 단어가 많은 글자만)
+     * 0 = 사용 안 함 (첫 글자 → 바로 단어 목록). 예: 30 으로 바꾸면 단어가 30개 이상인 글자만 나눔.
      */
-    const val DEFAULT_SPLIT_THRESHOLD = 1
+    const val DEFAULT_SPLIT_THRESHOLD = 0
 
     const val ALL = "*"
     const val OTHER = "#"
@@ -56,7 +56,7 @@ object WordIndex {
 
     /** 이 첫 글자 그룹을 2단계로 나눌지. */
     fun shouldSplit(group: Group, threshold: Int = DEFAULT_SPLIT_THRESHOLD): Boolean =
-        group.key != OTHER && group.count >= threshold
+        threshold > 0 && group.key != OTHER && group.count >= threshold
 
     /** 키에 해당하는 단어만 알파벳순으로. */
     fun filter(words: List<Word>, key: String): List<Word> {
