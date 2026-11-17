@@ -11,8 +11,11 @@ package com.sgh.wordwatch.core
  */
 object WordIndex {
 
-    /** 한 글자 그룹에 이 개수 이상이면 두 번째 글자 단계를 보여준다. */
-    const val DEFAULT_SPLIT_THRESHOLD = 15
+    /**
+     * 한 글자 그룹에 이 개수 이상이면 두 번째 글자 단계를 보여준다.
+     * 1 = 항상 두 번째 글자 단계를 보여줌. (예: 15 로 바꾸면 단어가 많은 글자만)
+     */
+    const val DEFAULT_SPLIT_THRESHOLD = 1
 
     const val ALL = "*"
     const val OTHER = "#"

@@ -35,8 +35,9 @@ class WordIndexTest {
     @Test fun filterAll() = assertEquals(8, WordIndex.filter(words, WordIndex.ALL).size)
 
     @Test fun split() {
-        assertTrue(WordIndex.shouldSplit(WordIndex.Group("A", 15)))
-        assertFalse(WordIndex.shouldSplit(WordIndex.Group("A", 14)))
+        assertTrue(WordIndex.shouldSplit(WordIndex.Group("A", 1)))   // 기본: 항상
+        assertTrue(WordIndex.shouldSplit(WordIndex.Group("A", 15), threshold = 15))
+        assertFalse(WordIndex.shouldSplit(WordIndex.Group("A", 14), threshold = 15))
         assertFalse(WordIndex.shouldSplit(WordIndex.Group("#", 99)))
     }
 }
